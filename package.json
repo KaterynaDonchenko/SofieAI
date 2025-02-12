@@ -12,13 +12,22 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@gsap/react": "^2.1.2",
     "@mui/icons-material": "^6.4.0",
     "@mui/material": "^6.4.0",
+    "@react-three/drei": "^10.0.0-rc.1",
+    "@react-three/fiber": "^9.0.0-alpha.8",
+    "@types/locomotive-scroll": "^4.1.4",
+    "@types/three": "^0.172.0",
+    "gsap": "^3.12.7",
+    "leva": "^0.10.0",
+    "locomotive-scroll": "^4.1.4",
     "next": "15.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "save-dev": "^0.0.1-security",
-    "tailwindcss-scoped-preflight": "^3.4.10"
+    "tailwindcss-scoped-preflight": "^3.4.10",
+    "three": "^0.172.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

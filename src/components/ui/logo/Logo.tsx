@@ -18,6 +18,6 @@ export function MainLogo({classLogo, classTitleLogo}: IMainLogo) {
     }, [classTitleLogo])
 
     return (
-        <Logo ref={logoRef} className={classLogo}/>
+        <Logo ref={logoRef} className={`${classLogo} transition-all duration-[0.3s] ease-linear`}/>
     )
 }
