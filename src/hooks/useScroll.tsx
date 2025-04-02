@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 export function useScroll() {
     const [scroll, setScroll] = useState<boolean>(false)
+    const [scrollY, setScrollY] = useState<number>(0)
 
     useEffect(() => {
         const handleScroll = () => {
@@ -12,9 +13,21 @@ export function useScroll() {
             }
         }
 
+        const getScrollY = () => {
+            setScrollY(window.scrollY)
+        }
+
         window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
+        window.addEventListener('scroll', getScrollY)
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+            window.removeEventListener('scroll', getScrollY)
+        }
     }, [])
 
-    return scroll
+    return {
+        scroll,
+        scrollY
+    }
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
 import { SITE_NAME } from "@/constants/seo.constants";
+import SiteLayout from "../components/site-layout/SiteLayout";
 import "./globals.scss";
 
 const nunito_Sans = Nunito_Sans({
@@ -25,10 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${nunito_Sans.variable} antialiased`}
-      >
-        {children}
-      </body>
+          className={`${nunito_Sans.variable} antialiased relative`}
+        >
+          <SiteLayout>
+            {children}
+          </SiteLayout>
+        </body>
     </html>
   );
 }

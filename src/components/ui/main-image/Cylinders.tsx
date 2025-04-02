@@ -2,15 +2,54 @@
 
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
-import { Canvas, useThree } from "@react-three/fiber";
-import { useRef, useEffect, useMemo } from "react";
+import { Canvas, useThree, extend, } from "@react-three/fiber";
+import { useRef, useEffect, useState } from "react";
 import { Mesh } from 'three';
 import { Reflector } from "three/examples/jsm/Addons.js";
-import { Text } from "@react-three/drei";
 import { gsap } from "gsap/gsap-core";
-import { MeshNormalMaterial } from "three";
 import { useGSAP } from "@gsap/react";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import { Text } from 'troika-three-text'
+
+extend({ Text });
+
+const TroikaText = ({text, 
+                     fontSize, 
+                     fontWeight, 
+                     maxWidth, 
+                     anchorX, 
+                     anchorY, 
+                     color,
+                     fillOpacity, 
+                     position,
+                     refCallback 
+                    }) => {
+  const textRef = useRef(null);
+
+  useEffect(() => {
+    if (textRef.current) {
+      textRef.current.text = text;
+      textRef.current.fontSize = fontSize;
+      textRef.current.fontWeight = fontWeight;
+      textRef.current.position.set(position[0], position[1], position[2]);
+      textRef.current.maxWidth = maxWidth;
+      textRef.current.anchorX = anchorX;
+      textRef.current.anchorY = anchorY;
+      textRef.current.color = color;
+      textRef.current.fillOpacity = fillOpacity
+      textRef.current.sync(); 
+
+      if (refCallback) refCallback(textRef.current);
+    }
+  }, []);
+
+  return (
+    <mesh>
+        <text ref={textRef} />
+    </mesh>
+  )
+};
+
 
 function GroundMirror({ cylinderRef, cylinderRadius }) {
   const { scene } = useThree();
@@ -30,13 +69,35 @@ function GroundMirror({ cylinderRef, cylinderRadius }) {
     scene.add(mirror);
     cylinderRef.current?.add(mirror);
 
+    return () => {
+      scene.remove(mirror);
+      cylinderRef.current?.remove(mirror);
+
+      geometry.dispose();
+      if (mirror.material) {
+        mirror.material.dispose();
+      }
+    }
+
   }, [scene, cylinderRef, cylinderRadius]); 
 
   return null;
 }
 
-
 function CylinderAnimation() {
+
+  useEffect(() => {
+    const originalWarn = console.warn;
+    console.warn = (...args: any[]) => {
+      if (typeof args[0] === 'string' && !args[0].includes('THREE.Color: Alpha component')) {
+        originalWarn.apply(console, args);
+      }
+    };
+
+    return () => {
+      console.warn = originalWarn;
+    };
+  }, []); 
 
   const cylinderRefs = [
     useRef<Mesh>(null),
@@ -59,23 +120,21 @@ function CylinderAnimation() {
   })
 
   const textRefs = useRef([]);
-  const animationWrapper = useRef()
+  const [isReady, setIsReady] = useState(false);
 
   const addToRefs = (el) => {
     if (el && !textRefs.current.includes(el)) {
-      textRefs.current.push(el)
+      textRefs.current.push(el);
+      setIsReady(true);
     }
   }
-  const materialInstance = useMemo(
-    () => new MeshNormalMaterial({ transparent: true, opacity: 0 }),
-    []
-  );
+  
   useGSAP(() => {
+    if (!isReady || textRefs.current.length === 0) return
+
     const tl = gsap.timeline({repeat: -1, smoothChildTiming: true });
 
-    if (!textRefs.current && !animationWrapper.current) return;
-
-    const ELEMENT_DURATION = 4; 
+    const ELEMENT_DURATION = 3.67; 
     const FADE_IN_DURATION = 0.3; 
     const FADE_OUT_DURATION = 0.09; 
     const STAGGER_DELAY = 3;  
@@ -83,8 +142,8 @@ function CylinderAnimation() {
       textRefs.current.forEach((text, i) => {
         const startTime = i * STAGGER_DELAY;
 
-        tl.to(text.material, {
-          opacity: 1,
+        tl.to(text, {
+          fillOpacity: 1,
           duration: FADE_IN_DURATION,
         }, startTime);
   
@@ -93,21 +152,29 @@ function CylinderAnimation() {
           { y: -1 },
           {  keyframes: [
             { y: 0, duration: 1.5 },        
-            { y: 0, duration: 1, at: 1.5 }, 
-            { y: 0.5, duration: 1.5, at: 2.5 }  
+            { y: 0, duration: 1  }, 
+            { y: 0.5, duration: 1.5 }  
           ],}, startTime);
-  
+
         tl.fromTo(
           text.rotation,
           { x: 90 * (Math.PI / 180) },
           { keyframes: [
             { x: 0,  duration: 1.5 },        
-            { x: 0,  duration: 1, at: 1.5 }, 
-            { x: -90 * (Math.PI / 180), duration: 1.5, at: 2.5 }  
+            { x: 0,  duration: 1 }, 
+            { x: -90 * (Math.PI / 180), duration: 1.5 }  
           ] }, startTime);
 
-        tl.to(text.material, {
-          opacity: 0,
+          tl.fromTo(
+            text,
+            { },
+            { keyframes: [
+              { color: 'rgb(0, 174, 255)',  duration: 1 },        
+              { color: 'rgb(251, 85, 243)',  duration: 1 }, 
+              { color: 'rgb(8, 0, 255)', duration: 1.5 }  
+            ] }, startTime);
+        tl.to(text, {
+          fillOpacity: 0,
           duration: .1,
           ease: "power2.inOut"
         }, startTime + ELEMENT_DURATION - FADE_OUT_DURATION);
@@ -115,19 +182,8 @@ function CylinderAnimation() {
     
       const totalDuration = (textRefs.current.length - 1) * STAGGER_DELAY + ELEMENT_DURATION
       tl.totalDuration(totalDuration);
-  }, []);
+  }, [isReady]);
 
-  console.log('1')
-
-  const textConfig = useMemo(() => ({
-          font: 'fonts/Inter_18pt-Regular.ttf',
-          fontSize: 0.17, 
-          fontWeight: 600,
-          maxWidth: 7, 
-          anchorX: 'center',
-          anchorY: 'middle',
-          color: 'white'  
-  }), []);
 
   return (
     <>
@@ -160,82 +216,78 @@ function CylinderAnimation() {
         <mesh >
           <GroundMirror cylinderRef={cylinderRefs[2]} cylinderRadius={1.35}/>
         </mesh>
-        </group> 
-         <mesh position={[7, 1.5, -2]}>
-        <Text
-          position={[-9.5, 0.4, 2]} 
-          fontSize={1} 
-          color="white" 
-          maxWidth={10} 
-          anchorX="center" 
-          anchorY="middle" 
-          
-        >
-          Power
-        </Text>
-        <mesh ref={animationWrapper} position={[0, 0.4, 0]}>
-          <Text
-            ref={addToRefs}
-            position={[-4.5, -0.5, 2]} 
-            fontSize={1} 
-            maxWidth={10} 
-            anchorX="center" 
-            anchorY="middle" 
-            material={materialInstance}
-          >
-            Enterprise AI 
-          </Text>
-          <Text
-            ref={addToRefs}
-            position={[-4.5, -1, 2]} 
-            fontSize={1} 
-            color="white" 
-            maxWidth={10} 
-            anchorX="center" 
-            anchorY="middle" 
-            material={materialInstance}
-          >
-            Productive AI 
-          </Text>
-          <Text
-            ref={addToRefs}
-            position={[-4.5, -2, 2]} 
-            fontSize={1} 
-            color="white" 
-            maxWidth={10} 
-            anchorX="center" 
-            anchorY="middle" 
-            material={materialInstance}
-          >
-            Generative AI
-          </Text>
-        </mesh>
-        <Text
-          position={[-5.5, -1, 2]} 
-          fontSize={1} 
-          color="white" 
-          maxWidth={10} 
-          anchorX="center" 
-          anchorY="middle" 
-        >
-          With Your Data
-        </Text>
-    </mesh> 
+        </group>
+        <mesh position={[7, 1.5, -2]}>
+          <TroikaText 
+            text='Power'
+            fontSize={1}
+            fontWeight={400}
+            maxWidth={10}
+            anchorX='center'
+            anchorY='middle'
+            color='white'
+            position={[-9.5, 0.4, 2]}/>
+        <mesh position={[0, 0.4, 0]}>
+          <TroikaText 
+              text='Enterprise AI'
+              fontSize={1}
+              fontWeight={400}
+              maxWidth={10}
+              anchorX='center'
+              anchorY='middle'
+              fillOpacity={0}
+              isMaterial={true}
+              refCallback={addToRefs}
+              position={[-4.5, -0.5, 2]}/>
+          <TroikaText 
+              text='Productive AI'
+              fontSize={1}
+              fontWeight={400}
+              maxWidth={10}
+              anchorX='center'
+              anchorY='middle'
+              fillOpacity={0}
+              isMaterial={true}
+              refCallback={addToRefs}
+              position={[-4.5, -0.5, 2]}/>
+          <TroikaText 
+              text='Generative AI'
+              fontSize={1}
+              fontWeight={400}
+              maxWidth={10}
+              anchorX='center'
+              anchorY='middle'
+              fillOpacity={0}
+              isMaterial={true}
+              refCallback={addToRefs}
+              position={[-4.5, -0.5, 2]}/>
+          </mesh>
+          <TroikaText 
+              text='With Your Data'
+              fontSize={1}
+              fontWeight={400}
+              maxWidth={10}
+              anchorX='center'
+              anchorY='middle'
+              position={[-5.5, -1, 2]}/>
+      </mesh> 
       <group>
-        <Text 
-          position={[1, -0.5, 1.6]}
-          {...textConfig}
-        >
-          Make the best models with the best data. Scale Data Engine powers nearly every major foundation model, and with Scale GenAI Platform, leverages your enterprise data to unlock the value of AI
-        </Text>
-        
-      </group>
+        <TroikaText 
+          text='Make the best models with the best data. Scale Data Engine powers nearly every major foundation model, and with Scale GenAI Platform, leverages your enterprise data to unlock the value of AI'
+          fontSize={0.17}
+          fontWeight={600}
+          maxWidth={7}
+          anchorX='center'
+          anchorY='middle'
+          color='white'
+          position={[1, -0.5, 1.6]}/>
+      </group>  
     </>
   )
 }
 
+
 export default function Cylinders() {
-  console.log('2')
 
     return (
         <>
@@ -245,13 +297,6 @@ export default function Cylinders() {
                   camera={{ position: [0, 0, 5], fov: 75 }} 
                   style={{width: "1600px", height: "600px" }} 
                   shadows
-                  onCreated={({ gl }) => {
-                    gl.domElement.addEventListener('webglcontextlost', (event) => {
-                      event.preventDefault(); 
-                      console.error(event);
-
-                    }, false);
-                  }}
                   gl={{preserveDrawingBuffer:true}}>
                     <ambientLight intensity={7} color='white'/>
           

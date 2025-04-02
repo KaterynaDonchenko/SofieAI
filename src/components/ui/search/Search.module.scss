@@ -1,0 +1,13 @@
+.search {
+    @apply flex
+}
+
+.input {
+    @apply border-y border-r border-black border-solid  rounded-e-full outline-none
+    py-2.5 cursor-pointer 
+}
+
+.iconWrapper {
+    @apply flex align-middle border-y border-l border-black border-solid rounded-l-full outline-none
+    py-2.5 cursor-pointer w-[2.8125rem] h-[3.125rem] pl-[0.7rem]
+}

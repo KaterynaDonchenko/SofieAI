@@ -3,12 +3,21 @@
     height: 73px;
 }
 
-.titleLogo {
+.titleLogoWhite {
     fill: #fff;
 }
 
-.background {
+.titleLogoBlack {
+    fill: #000;
+}
+
+.backgroundOP4 {
     background-color: rgba(255, 255, 255, 0.4);
+    font-weight: 500;
+}
+
+.backgroundOP9 {
+    background-color: rgba(255, 255, 255, 0.9);
     font-weight: 500;
 }
 

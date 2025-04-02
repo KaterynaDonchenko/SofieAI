@@ -27,9 +27,9 @@ export function Download() {
             },
             {    
             opacity: 1,
-            x: 0,        // Final rotation value
-            duration: 2,       // Animation duration in seconds
-            ease: "power2.out", // Easing function
+            x: 0,        
+            duration: 2,       
+            ease: "power2.out", 
         });
     }, []);
 
@@ -47,9 +47,9 @@ export function Download() {
             },
             {    
             opacity: 1,
-            y: 0,        // Final rotation value
-            duration: 1,       // Animation duration in seconds
-            ease: "power2.out", // Easing function
+            y: 0,        
+            duration: 1,       
+            ease: "power2.out", 
         });
     }, []);
 
@@ -67,9 +67,9 @@ export function Download() {
             },
             {    
             opacity: 1,
-            x: 0,        // Final rotation value
-            duration: 1,       // Animation duration in seconds
-            ease: "power2.out", // Easing function
+            x: 0,        
+            duration: 1,       
+            ease: "power2.out", 
         });
     }, []);
 
@@ -87,14 +87,14 @@ export function Download() {
             },
             {    
             opacity: 1,
-            x: 0,        // Final rotation value
-            duration: 1,       // Animation duration in seconds
-            ease: "power2.out", // Easing function
+            x: 0,        
+            duration: 1,       
+            ease: "power2.out", 
         });
     }, []);
 
     return (
-        <div ref={container} className="download">
+        <div id='download' ref={container} className="download">
             <div className="wrapper px-6 flex justify-between">
                 <Image className="download-img-left" src='/download-decoration-left.png' alt='download decoration left' width={235} height={306}/>
                 <div className="main">
@@ -104,11 +104,11 @@ export function Download() {
                     </div>
                     <h2 className="download-subtitle subtitle text-[2.3565rem] text-center font-medium pb-2">Try it for FREE</h2>
                     <div className="stores flex justify-between items-center">
-                        <Link href='#'>
+                        <Link href='https://apps.apple.com/us/app/sophie-guru/id6470261153'>
                             <AppleStore className=' h-[4.5323rem]'/>
                         </Link>
-                        <Link href='#'>
-                            <GooglePlay className=' h-[4.375rem]'/>
+                        <Link href='https://play.google.com/store/apps/details?id=guru.sophie'>
+                            <GooglePlay className=' h-[4.375rem] cursor-pointer'/>
                         </Link>
                     </div>
                 </div>

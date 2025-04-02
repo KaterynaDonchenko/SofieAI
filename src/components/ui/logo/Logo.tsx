@@ -9,11 +9,19 @@ interface IMainLogo extends HTMLAttributes<HTMLImageElement> {
 }
 export function MainLogo({classLogo, classTitleLogo}: IMainLogo) {
     const logoRef = useRef<SVGSVGElement>(null)
+    const prevClassRef = useRef<string | null>(null);
 
     useEffect(() => {
         if (logoRef.current && classTitleLogo) {
             const titlePathOfSvg = logoRef.current.children[2] as SVGPathElement;
-            titlePathOfSvg.classList.add(classTitleLogo)
+
+            if (prevClassRef.current) {
+                titlePathOfSvg.classList.remove(prevClassRef.current);
+            }
+
+            titlePathOfSvg.classList.add(classTitleLogo);
+
+            prevClassRef.current = classTitleLogo;
         }
     }, [classTitleLogo])
 

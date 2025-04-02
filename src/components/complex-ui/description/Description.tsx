@@ -13,7 +13,6 @@ gsap.registerPlugin(ScrollTrigger);
 export function Description() {
     const container = useRef(null)
     useEffect(() => {
-        // Define animation parameters
         const elements = [
             { selector: ".description_title", delay: 0.3 },
             { selector: ".description_text", delay: 0.5 },
@@ -23,8 +22,8 @@ export function Description() {
             gsap.timeline({
                 scrollTrigger: {
                     trigger: selector,
-                    start: "top center",
-                    end: "bottom center",
+                    start: "top 70%",
+                    end: "bottom 10%",
                     toggleActions: "play none none none"
                 },
             }).to(selector, {
@@ -54,16 +53,16 @@ export function Description() {
                 rotateY: -100, 
             },
             {    
-            autoAlpha: 1, // Final state: visible
-            perspective: 2500, // Perspective for 3D effect
-            rotateY: 0,        // Final rotation value
-            duration: 2,       // Animation duration in seconds
-            ease: "power2.out", // Easing function
+            autoAlpha: 1, 
+            perspective: 2500, 
+            rotateY: 0,        
+            duration: 2,       
+            ease: "power2.out", 
         });
     }, []);
 
     return (
-        <div ref={container} className="description">
+        <div id="description" ref={container} className="description">
                 <div className="px-4 pt-[300px] grid gap-[2rem] pb-[5.625rem]">
                     <Title title='🪄 Get started with Sophie' classTitle='description_title opacity-0 translate-x-[-100px]'/>
                     <div className="description_text opacity-0 translate-x-[-100px]"><strong>Sophie</strong> is a revolutionary <strong>AI</strong> chatbot powered by <span className="text-[#FE5DB0] font-semibold">GPT-4</span>. From summarize, translate, enhance your text, and generate to answering any question from you, <strong>Sophie</strong> can do it all!</div>
@@ -74,7 +73,7 @@ export function Description() {
                             <div className="text pb-2 text-[1.25rem]"><span className="text-[#B682FD]">Sophie is a writing assistant.</span> that helps you create high-quality content for various uses cases.</div>
                             <div className="bottom flex items-end justify-between flex-grow">
                                 <Link href='#' className="text-[1.3118rem] text-[#605F60] font-bold leading-[1.334]">View more</Link>
-                                <Button title='' classBtn='!bg-[#0057FF] !rounded-tl-full !rounded-tr-full !rounded-br-full !rounded-bl-full !min-w-10 !h-10 !py-0 !px-0 justify-center items-center'><span className=""><ArrowDownwardIcon className="text-xl rotate-[-46deg]"/></span></Button>
+                                <Button index={0} label='window' title='' classBtn='!bg-[#0057FF] !rounded-tl-full !rounded-tr-full !rounded-br-full !rounded-bl-full !min-w-10 !h-10 !py-0 !px-0 justify-center items-center'><span className=""><ArrowDownwardIcon className="text-xl rotate-[-46deg]"/></span></Button>
                             </div>
                         </div>
                         <div className="card p-8 rounded-[30px] bg-[#E2CDFF] flex flex-col gap-4 min-h-[41.44rem]">
@@ -83,7 +82,7 @@ export function Description() {
                             <div className="text text-[1.25rem]"><span className="text-[#FE5DB0]">Sophie’s knowledge base aims to capture human expert knowledge</span> to support decision-making, problem solving, and more.</div>
                             <div className="bottom flex items-end justify-between flex-grow">
                                 <Link href='#' className="text-[1.3118rem] text-[#605F60] font-bold leading-[1.334]">View more</Link>
-                                <Button title='' classBtn='!bg-[#0057FF] !rounded-tl-full !rounded-tr-full !rounded-br-full !rounded-bl-full !min-w-10 !h-10 !py-0 !px-0 justify-center items-center'><span className=""><ArrowDownwardIcon className="text-xl rotate-[-46deg]"/></span></Button>
+                                <Button index={1} label='window' title='' classBtn='!bg-[#0057FF] !rounded-tl-full !rounded-tr-full !rounded-br-full !rounded-bl-full !min-w-10 !h-10 !py-0 !px-0 justify-center items-center'><span className=""><ArrowDownwardIcon className="text-xl rotate-[-46deg]"/></span></Button>
                             </div>
                         </div>
                         <div className="complex-card grid gap-6">
@@ -93,14 +92,16 @@ export function Description() {
                                 <div className="text text-[1.25rem]"><strong>Producing unique combinations</strong> of familiar ideas.</div>
                                 <div className="bottom flex items-end justify-between flex-grow">
                                     <Link href='#' className="text-[1.3118rem] text-[#605F60] font-bold leading-[1.334]">View more</Link>
-                                    <Button title='' classBtn='!bg-[#0057FF] !rounded-tl-full !rounded-tr-full !rounded-br-full !rounded-bl-full !min-w-10 !h-10 !py-0 !px-0 justify-center items-center'><span className=""><ArrowDownwardIcon className="text-xl rotate-[-46deg]"/></span></Button>
+                                    <Button index={2} label='window' title='' classBtn='!bg-[#0057FF] !rounded-tl-full !rounded-tr-full !rounded-br-full !rounded-bl-full !min-w-10 !h-10 !py-0 !px-0 justify-center items-center'><span className=""><ArrowDownwardIcon className="text-xl rotate-[-46deg]"/></span></Button>
                                 </div>
                             </div>
                             <div className="card p-8 rounded-[30px] bg-[#B5E4FF]">
                                 <div className="text text-[1.25rem]"><strong>Discover more interesting features that Sophie supports you.</strong></div>
                                 <div className="bottom flex items-end justify-between flex-grow">
-                                    <Link href='#' className="text-[1.3118rem] text-[#605F60] font-bold leading-[1.334]">And more</Link>
-                                    <Button title='' classBtn='!bg-[#0057FF] !rounded-tl-full !rounded-tr-full !rounded-br-full !rounded-bl-full !min-w-10 !h-10 !py-0 !px-0 justify-center items-center'><span className=""><ArrowDownwardIcon className="text-xl rotate-[-46deg]"/></span></Button>
+                                    <Link href='#download' className="text-[1.3118rem] text-[#605F60] font-bold leading-[1.334]">And more</Link>
+                                    <Link href='#download'>
+                                        <Button title='' classBtn='!bg-[#0057FF] !rounded-tl-full !rounded-tr-full !rounded-br-full !rounded-bl-full !min-w-10 !h-10 !py-0 !px-0 justify-center items-center'><span className=""><ArrowDownwardIcon className="text-xl rotate-[-46deg]"/></span></Button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
