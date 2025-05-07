@@ -1,6 +1,5 @@
 'use client'
 
-import Image from "next/image";
 import { Title } from '../../ui/title/Title';
 import Link from "next/link";
 import gsap from 'gsap';
@@ -21,15 +20,11 @@ export function Download() {
                 end: "bottom 10%",
                 toggleActions: "play none none none",
             },
-        }).fromTo(".download-title",
-            { opacity: 0,
-                x: 100
-            },
-            {    
+        }).to('.download-title', {
+            y: 0,
             opacity: 1,
-            x: 0,        
             duration: 2,       
-            ease: "power2.out", 
+            ease: "power2.out",
         });
     }, []);
 
@@ -93,27 +88,36 @@ export function Download() {
         });
     }, []);
 
-    return (
-        <div id='download' ref={container} className="download">
-            <div className="wrapper px-6 flex justify-between">
-                <Image className="download-img-left" src='/download-decoration-left.png' alt='download decoration left' width={235} height={306}/>
-                <div className="main">
-                    <div className="title-wrapper flex justify-between items-center pb-8">
-                        <Image src='/sophie-avatar.png' alt='sophie avatar' width={66} height={68}/>
-                        <Title title='Meet Sophie now' classTitle="download-title"/>
+        return (
+            <div id='download' ref={container} className="download">
+                <div className="download-wrapper px-6 pb-2 grid grid-cols-[1fr_2fr_1fr]">
+                    <div className="left-block h-[223px]">
+                        <video className="download-img-left h-full w-full object-contain rounded-md" autoPlay muted loop playsInline>
+                            <source src="/videos/SEAL-Alpha-v2.mp4" type="video/mp4" />
+                            <source src="/videos/SEAL-Alpha-v2.webm" type="video/webm" />
+                        </video>
                     </div>
-                    <h2 className="download-subtitle subtitle text-[2.3565rem] text-center font-medium pb-2">Try it for FREE</h2>
-                    <div className="stores flex justify-between items-center">
-                        <Link href='https://apps.apple.com/us/app/sophie-guru/id6470261153'>
-                            <AppleStore className=' h-[4.5323rem]'/>
-                        </Link>
-                        <Link href='https://play.google.com/store/apps/details?id=guru.sophie'>
-                            <GooglePlay className=' h-[4.375rem] cursor-pointer'/>
-                        </Link>
+                    <div className="main">
+                        <div className="title-wrapper flex justify-center items-center pb-4">
+                            <Title title='Meet Sophie now' classTitle="download-title opacity-0 translate-y-[-30px]"/>
+                        </div>
+                        <h2 className="download-subtitle subtitle text-[2.3565rem] text-center font-medium pb-2">Try it for FREE</h2>
+                        <div className="download__stores flex justify-between items-center">
+                            <Link href='https://apps.apple.com/us/app/sophie-guru/id6470261153'>
+                                <AppleStore className=' h-[4.5323rem]'/>
+                            </Link>
+                            <Link href='https://play.google.com/store/apps/details?id=guru.sophie'>
+                                <GooglePlay className=' h-[4.375rem] cursor-pointer'/>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="left-block h-[223px]">
+                        <video className="download-img-right h-full w-full object-contain rounded-md" autoPlay muted loop playsInline>
+                            <source src="/videos/SEAL-Alpha-v2.mp4" type="video/mp4" />
+                            <source src="/videos/SEAL-Alpha-v2.webm" type="video/webm" />
+                        </video>
                     </div>
                 </div>
-                <Image className="download-img-right" src='/download-decoration-right.png' alt='download decoration right' width={253} height={223}/>
             </div>
-        </div>
-    )
+        )
 }

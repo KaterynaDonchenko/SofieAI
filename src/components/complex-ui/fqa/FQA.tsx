@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { QUESTIONS } from "@/constants/variable.constants";
 import { FQAItem } from "./FQAItem";
 import { IQuestions } from "@/types/questions.type";
+import { Error } from "../../ui/error/Error"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -57,7 +58,7 @@ export function FQA({questions, search, children}: IFQA) {
                 ? getQuestionList(getSearchQuestions(QUESTIONS, search)) 
                 : getQuestionList(QUESTIONS)               
 
-    const mainTitle = <Title title="📮 FAQ"/>                                  
+    const mainTitle = <Title title="FAQ"/>                                  
     const titleResult = <Title title="💡 Results"/>
     const titleNoResult = <Title title="🕳 No Results"/>
 
@@ -67,15 +68,16 @@ export function FQA({questions, search, children}: IFQA) {
                   ? titleNoResult 
                   : titleResult;
 
+    const content = list.length > 0 ? list : <Error/>
     return (
         <div ref={container} className="fqa">
-            <div className="title flex justify-between items-center pb-8">
+            <div className="flex justify-between items-center pb-8">
                 {title}
                 {children}
             </div>
-            <div className="questions pb-[5.625rem]">
+            <div className="questions pb-[5.625rem] md:pb-[0.4rem]">
                 <ul>
-                    {list}
+                    {content}
                 </ul>
             </div>
         </div>

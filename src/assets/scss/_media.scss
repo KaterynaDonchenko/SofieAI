@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.header__logo {
+    width: 224px;
+    height: 73px;
+
+    @media (max-width: 640px) { 
+        @apply w-[150px]
+    }
+}
+
+.menu-wrapper {
+    @media (max-width: 1536px) { 
+        @apply w-[85%]
+    }
+
+    @media (max-width: 1280px) { 
+        @apply w-[65rem]
+    }
+
+    @media (max-width: 1025px) { 
+        @apply w-[48rem]
+    }
+
+    @media (max-width: 768px) { 
+        @apply w-full m-0
+    }
+}
+
+.mobile-menu__window {
+    @media (max-width: 640px) { 
+        @apply w-[80%]
+    }
+}
+
+.menu {
+    @media (max-width: 1280px) {
+        @apply gap-[3rem]
+    }
+
+    @media (max-width: 1025px) {
+        @apply gap-[.2rem]
+    }
+}
+
+.menu-list {
+    @media (max-width: 1280px) {
+        @apply gap-4
+    }
+
+    @media (max-width: 1025px) {
+        @apply gap-[0.5rem] items-start
+    }
+
+}
+
+.menu-item {
+    @media (max-width: 1025px) { 
+        @apply w-[73px] flex justify-center
+    }
+}
+
+.menu__btn {
+    @media (max-width: 1025px) { 
+        @apply px-[1rem] 
+    }
+}
+
+
+.logo {
+    @media (max-width: 1536px) { 
+        @apply w-[12rem] !important
+    }
+}
+
+.left-block, .right-block {
+    @media (max-width: 1025px) { 
+        @apply hidden
+    }
+}
+
+.questions {
+    @media (max-width: 768px) { 
+        @apply pb-[0.4rem]
+    }
+}
+
+.download__stores {
+    @media (max-width: 640px) {
+        @apply flex-col gap-4
+    }
+}
+
+.title {
+    @media (max-width: 640px) {
+        @apply text-[36px]
+    }
+}
+
+.features-title {
+    @media (max-width: 640px) {
+        @apply pb-[7rem]
+    }
+}
+
+
+.download-wrapper {
+    @media (max-width: 1025px) {
+        @apply justify-center pb-[10px] grid-cols-1
+    }
+}
+
+.footer-bottom {
+    @media (max-width: 1025px) {
+        @apply w-[65%]
+    }
+    @media (max-width: 768px) {
+        @apply w-[80%]
+    }
+}
+
+.description__wrapper {
+    @media (max-width: 1025px) {
+        @apply grid-cols-2
+    }
+
+    @media (max-width: 768px) {
+        @apply grid-cols-1
+    }
+}
+
+.description__container {
+    @media (max-width: 640px) {
+        @apply pb-[3.625rem]
+    }
+}
+
+.description_text {
+    @media (max-width: 768px) {
+        @apply text-[22px]
+    }
+}
+
+.description__title {
+    @media (max-width: 768px) {
+        @apply text-center text-[30px]
+    }
+}
+
+.feature__wrapper {
+    @media (max-width: 768px) {
+        @apply flex-col-reverse
+    }
+}
+
+.feature__left-block, .features-img {
+    @media (max-width: 768px) {
+        @apply w-[100%]
+    }
+}
+
+.feature__left-block {
+    @media (max-width: 768px) {
+        @apply pt-[50px]
+    }
+}
+
+.footer-bottom {
+    @media (max-width: 640px) {
+        @apply flex-col gap-8
+    }
+}
+
+.footer-list {
+    @media (max-width: 768px) {
+        @apply flex-col gap-6
+    }
+}
+
+.footer-link, .footer-bottom__title {
+    @media (max-width: 768px) {
+        @apply block w-full text-center text-[24px]
+    }
+}
+
+.footer-logo {
+    @media (max-width: 768px) {
+        @apply pb-[2rem] block m-auto
+    }
+}
+
+.footer__nav {
+    @media (max-width: 768px) {
+        @apply pb-[3.125rem]
+    }
+}
+
+.footer__email {
+    @media (max-width: 640px) {
+        @apply text-[22px]
+    }
+}
+
+.footer__appleStore, .footer__googleStore  {
+    @media (max-width: 640px) {
+        @apply h-[3.4rem]
+    }
+}
+
+.window__wrapper {
+    @media (max-width: 1025px) {
+        @apply flex-col-reverse
+    }
+    @media (max-width: 768px) {
+        @apply gap-2
+    }
+}
+
+.window__text {
+    @media (max-width: 768px) {
+        @apply text-[21px]
+    }
+}
+
+.menu {
+    @media (max-width: 768px) {
+        @apply hidden
+    }
+}
+
+.mobile-menu {
+    @media (max-width: 768px) {
+        @apply block
+    }
+}
+
+.fqa__link {
+    @media (max-width: 640px) {
+        @apply text-[22px]
+    }
+}
+
+.fqa__item-text {
+    @media (max-width: 640px) {
+        @apply text-[22px]
+    }
+}
+
+.error {
+    @media (max-width: 768px) {
+        @apply flex-col
+    }
+}
+
+
+
+

@@ -23,13 +23,100 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
-  overflow-x: hidden;
+  // overflow-x: hidden;
 }
 
 .container {
   margin: 0 auto;
   max-width: 1200px;
+  @apply mx-auto px-4;
+
 }
+
+@keyframes gradient-y {
+  0%, 100% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+}
+
+.animate-gradient-y {
+  animation: gradient-y 7s ease infinite;
+}
+
+.glowing-shimmer-text:hover {
+  position: relative;
+  display: flex;
+  background: linear-gradient(
+    50deg,
+    #714DFF,
+    #9C83FF 31.28%,
+    #E151FF 57.97%,
+    #FFF759 85.64%
+  ) !important;
+  background-size: 200% 200%;
+  overflow: hidden;
+
+  animation: gradientShimmer 2s ease-in-out forwards infinite;
+
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
+               0 0 20px rgba(255, 255, 255, 0.4),
+               0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes gradientShimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.glowing-shimmer-text:hover::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  transform: skewX(25deg);
+  pointer-events: none;
+}
+
+.glowing-shimmer-text:hover::after {
+  animation: lightGlint 1s ease-in-out infinite;
+}
+
+@keyframes lightGlint {
+  0% {
+    left: 100%;
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    left: -75%;
+    opacity: 0;
+  }
+}
+
+
 
 
 

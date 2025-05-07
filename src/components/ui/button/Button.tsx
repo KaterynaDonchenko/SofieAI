@@ -18,7 +18,7 @@ export function Button({initialStyle = true, title, classBtn, label, index = 0, 
 
     const {setWindows} = windowsContext
 
-    const style = 'flex gap-2 rounded-tl-[3.125rem] rounded-tr-[1.25rem] rounded-br-none rounded-bl-[3.125rem] outline-none cursor-pointer leading-7 min-w-[4rem] py-[0.75rem] px-[1.5rem] tracking-[0.02857em] text-white bg-black transition-all duration-[0.3s] ease-linear'
+    const style = 'rounded-tl-[3.125rem] rounded-tr-[1.25rem] rounded-br-none rounded-bl-[3.125rem] outline-none cursor-pointer leading-7 min-w-[4rem] py-[0.75rem] px-[1.5rem] tracking-[0.02857em] text-white bg-black transition-all duration-[0.4s] ease-in-out forwards'
     
     const toggleWindow = () => {
         setWindows(prev => {
@@ -28,9 +28,13 @@ export function Button({initialStyle = true, title, classBtn, label, index = 0, 
         })
     }
 
+    const getWindowFunction = () => label === 'window' ? toggleWindow : undefined;
+
+    const onClickFunction = () => getWindowFunction()?.()
+    
     return (
         <button className={`${classBtn} ${initialStyle ? style : classBtn}`}
-                onClick={label === 'window' ? () => toggleWindow() : undefined}>
+                onClick={onClickFunction}>
             {title}
             {children}
         </button>

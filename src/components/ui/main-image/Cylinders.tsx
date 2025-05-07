@@ -10,8 +10,35 @@ import { gsap } from "gsap/gsap-core";
 import { useGSAP } from "@gsap/react";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import { Text } from 'troika-three-text'
+import { useWindowWidth } from "@/hooks/useWindowWidth";
 
 extend({ Text });
+
+interface ICylinderParameters {
+  radius: number,
+  radialSegments: number,
+  mirrorRadius: number,
+  xPosition?: number,
+  yPosition?: number
+}
+
+interface ITextParameters {
+  mainTextSize?: number,
+  subtextSize?: number,
+  positionMainTextX?: number,
+  positionMainTextY?: number,
+  positionCarouselText?: number,
+  positionSubMainText?: number,
+  positionCarouselWrapperTextX: number,
+  positionCarouselWrapperTextY: number,
+  positionSubCarouselTextX: number,
+  positionSubCarouselTextY: number,
+  positionSubTextX: number,
+  positionSubTextY: number,
+  maxWidthSubtext?: number,
+  positionSubText?: number,
+  subTextMaxWidth: number
+}
 
 const TroikaText = ({text, 
                      fontSize, 
@@ -24,7 +51,8 @@ const TroikaText = ({text,
                      position,
                      refCallback 
                     }) => {
-  const textRef = useRef(null);
+
+  const textRef = useRef(null)
 
   useEffect(() => {
     if (textRef.current) {
@@ -41,7 +69,7 @@ const TroikaText = ({text,
 
       if (refCallback) refCallback(textRef.current);
     }
-  }, []);
+  }, [text, fontSize, fontWeight, maxWidth, anchorX, anchorY, color, fillOpacity, position, refCallback]);
 
   return (
     <mesh>
@@ -184,103 +212,263 @@ function CylinderAnimation() {
       tl.totalDuration(totalDuration);
   }, [isReady]);
 
+  const screenWidth = useWindowWidth()
+
+  const [firstCylinderParameters, setFirstCylinderParameters]= useState<ICylinderParameters>({
+    radius: 1.8,
+    radialSegments: 100,
+    mirrorRadius: 1.75,
+    xPosition: -3,
+    yPosition: -1
+  })
+
+  const [secondCylinderParameters, setSecondCylinderParameters] = useState<ICylinderParameters>({
+    radius: 1.4,
+    radialSegments: 32,
+    mirrorRadius: 1.35,
+    xPosition: -3.6
+  })
+
+  const [thirdCylinderParameters, setThirdCylinderParameters] = useState<ICylinderParameters>({
+    radius: 1.4,
+    radialSegments: 100,
+    mirrorRadius: 1.35,
+    xPosition: 6
+  })
+
+  const [textParameters, setTextParameters] = useState<ITextParameters>({
+    mainTextSize: 1,
+    subtextSize: 0.17, 
+    positionMainTextX: -9.5,
+    positionMainTextY: 0.4, 
+    positionCarouselText: -4.5,
+    positionCarouselWrapperTextX: 0,
+    positionCarouselWrapperTextY: 0.4,
+    positionSubCarouselTextX: -6.2,
+    positionSubCarouselTextY: -1,
+    positionSubMainText: -6.5,
+    positionSubTextX: 0.5,
+    positionSubTextY: -0.5,
+    maxWidthSubtext: 6, 
+    positionSubText: 0.4,
+    subTextMaxWidth: 6  
+  })
+
+  useEffect(() => {
+    if (screenWidth === null) return;
+    
+    if (screenWidth >= 1024 && screenWidth <= 1280) {
+      setFirstCylinderParameters(prev => ({
+        ...prev,
+        radius: 1.5, 
+        radialSegments: 100,
+        mirrorRadius: 1.45 
+      }))
+      setSecondCylinderParameters(prev => ({
+        ...prev,
+        radius: 1.1, 
+        radialSegments: 32,
+        mirrorRadius: 1.05 
+      }))
+      setThirdCylinderParameters(prev => ({
+        ...prev,
+        radius: 1.1, 
+        radialSegments: 100,
+        mirrorRadius: 1.05, 
+        xPosition: 5, 
+      }))
+      setTextParameters(prev => ({
+        ...prev,
+        mainTextSize: 0.8,
+        subtextSize: 0.15,
+        positionCarouselText: -5.4,
+        positionSubMainText: -6.5, 
+        positionSubCarouselTextX: -7
+      }))
+
+      if (textRefs.current.length > 0) {
+        textRefs.current.forEach(item => {
+          item.position.x = -5
+        })
+      }
+    } else if (screenWidth >= 768 && screenWidth <= 1024 ) {
+      setFirstCylinderParameters(prev => ({
+        ...prev,
+        radius: 1, 
+        radialSegments: 100,
+        mirrorRadius: 0.95 
+      }))
+      setSecondCylinderParameters(prev => ({
+        ...prev,
+        radius: 1.1, 
+        radialSegments: 32,
+        mirrorRadius: 1.05 
+      }))
+      setThirdCylinderParameters(prev => ({
+        ...prev,
+        radius: 1, 
+        radialSegments: 100,
+        mirrorRadius: 0.95, 
+        xPosition: 4, 
+      }))
+      setTextParameters(prev => ({
+        ...prev,
+        mainTextSize: 0.7,
+        subtextSize: 0.15,
+        positionCarouselText: -5.5,
+        positionSubMainText: -7,
+        subTextMaxWidth: 5,
+        positionSubTextX: 0.1, 
+      }))
+    } 
+    else if (screenWidth >= 640 && screenWidth <= 768 ) {
+      setTextParameters(prev => ({
+          ...prev,
+          maxWidthSubtext: 5,
+          positionSubText: 0.05
+      }))
+    }
+    else if (screenWidth < 640) {
+      setFirstCylinderParameters(prev => ({
+        ...prev,
+        radius: 1.2, 
+        mirrorRadius: 1.15,
+        xPosition: -1.45,
+        yPosition: -1.9
+      }))
+      setSecondCylinderParameters(prev => ({
+        ...prev,
+        xPosition: -1.5
+        
+      }))
+      setThirdCylinderParameters(prev => ({
+        ...prev,
+        xPosition: 2.4, 
+      }))
+      setTextParameters(prev => ({
+        ...prev,
+        mainTextSize: 0.5,
+        positionMainTextX: -7,
+        positionMainTextY: 1.3,
+        positionCarouselWrapperTextX: -2.5,
+        positionCarouselWrapperTextY: 0.3,
+        positionSubCarouselTextY: -0.9,
+        positionSubCarouselTextX: -7,
+        positionSubTextX: 0.1,
+        positionSubTextY: -0.9,
+        subTextMaxWidth: 2.8
+    }))
+    }
+    
+  }, [screenWidth])
 
   return (
     <>
-       <group position={[-3, -1, 0.5]}>
+       <group position={[firstCylinderParameters.xPosition, firstCylinderParameters.yPosition, 0.5]}> 
         <mesh ref={cylinderRefs[0]} rotation={[0, 10 * (Math.PI / 180), 140 * (Math.PI / 180)]}>
-          <cylinderGeometry args={[1.8, 1.8, .2, 100]}/>
+          <cylinderGeometry args={[firstCylinderParameters.radius, 
+                                  firstCylinderParameters.radius, 
+                                  .2, 
+                                  firstCylinderParameters.radialSegments]}/>
           <meshPhysicalMaterial color="blue" metalness={.3} roughness={0.2} attach='material-0'/>
             <meshPhysicalMaterial color="blue" metalness={.3} roughness={0.2} attach='material-2'/>
         </mesh>
         <mesh >
-          <GroundMirror cylinderRef={cylinderRefs[0]} cylinderRadius={1.75}/>
+          <GroundMirror cylinderRef={cylinderRefs[0]} cylinderRadius={firstCylinderParameters.mirrorRadius}/>
         </mesh>
       </group>
-      <group position={[-3.6, .7, -1.2]}>
+      <group position={[secondCylinderParameters.xPosition, .7, -1.2]}>
         <mesh ref={cylinderRefs[1]} position={[0, 2, 0]} rotation={[0, -30 * (Math.PI / 180), 50 * (Math.PI / 180)]}>
-            <cylinderGeometry args={[1.4, 1.4, .2, 32]} />
+            <cylinderGeometry args={[secondCylinderParameters.radius, 
+                                     secondCylinderParameters.radius, 
+                                     .2, 
+                                     secondCylinderParameters.radialSegments]} />
             <meshPhysicalMaterial color="blue" metalness={.3} roughness={0.2} attach='material-0'/>
             <meshPhysicalMaterial color="blue" metalness={.3} roughness={0.2} attach='material-2'/>
         </mesh>
         <mesh >
-          <GroundMirror cylinderRef={cylinderRefs[1]} cylinderRadius={1.35}/>
+          <GroundMirror cylinderRef={cylinderRefs[1]} cylinderRadius={secondCylinderParameters.mirrorRadius}/>
         </mesh>
       </group>
-      <group position={[6, .2, -.5]}>
+      <group position={[thirdCylinderParameters.xPosition, .2, -.5]}>
         <mesh ref={cylinderRefs[2]} rotation={[0, 5 * (Math.PI / 180), -100 * (Math.PI / 180)]}>
-          <cylinderGeometry args={[1.4, 1.4, 0.2, 100]} />
+          <cylinderGeometry args={[thirdCylinderParameters.radius, 
+                                   thirdCylinderParameters.radius, 
+                                   0.2, 
+                                   thirdCylinderParameters.radialSegments]} />
           <meshNormalMaterial  attach='material-0'/>
             <meshPhysicalMaterial color="#00bc10" metalness={.3} roughness={0.2} attach='material-2'/>
         </mesh>
         <mesh >
-          <GroundMirror cylinderRef={cylinderRefs[2]} cylinderRadius={1.35}/>
+          <GroundMirror cylinderRef={cylinderRefs[2]} cylinderRadius={thirdCylinderParameters.mirrorRadius}/>
         </mesh>
         </group>
         <mesh position={[7, 1.5, -2]}>
-          <TroikaText 
+          <TroikaText
+            key={'power' + textParameters?.mainTextSize + '-' + textParameters?.positionCarouselText} 
             text='Power'
-            fontSize={1}
+            fontSize={textParameters.mainTextSize}
             fontWeight={400}
             maxWidth={10}
             anchorX='center'
             anchorY='middle'
             color='white'
-            position={[-9.5, 0.4, 2]}/>
-        <mesh position={[0, 0.4, 0]}>
-          <TroikaText 
-              text='Enterprise AI'
-              fontSize={1}
-              fontWeight={400}
-              maxWidth={10}
-              anchorX='center'
-              anchorY='middle'
-              fillOpacity={0}
-              isMaterial={true}
-              refCallback={addToRefs}
-              position={[-4.5, -0.5, 2]}/>
-          <TroikaText 
-              text='Productive AI'
-              fontSize={1}
-              fontWeight={400}
-              maxWidth={10}
-              anchorX='center'
-              anchorY='middle'
-              fillOpacity={0}
-              isMaterial={true}
-              refCallback={addToRefs}
-              position={[-4.5, -0.5, 2]}/>
-          <TroikaText 
-              text='Generative AI'
-              fontSize={1}
-              fontWeight={400}
-              maxWidth={10}
-              anchorX='center'
-              anchorY='middle'
-              fillOpacity={0}
-              isMaterial={true}
-              refCallback={addToRefs}
-              position={[-4.5, -0.5, 2]}/>
+            position={[textParameters.positionMainTextX, textParameters.positionMainTextY, 2]}/>
+          <mesh position={[textParameters.positionCarouselWrapperTextX, textParameters.positionCarouselWrapperTextY, 0]}> 
+            <TroikaText
+                text='Enterprise AI'
+                fontSize={textParameters.mainTextSize}
+                fontWeight={400}
+                maxWidth={10}
+                anchorX='center'
+                anchorY='middle'
+                fillOpacity={0}
+                isMaterial={true}
+                refCallback={addToRefs}
+                position={[textParameters.positionCarouselText, -0.5, 2]}/>
+            <TroikaText
+                text='Productive AI'
+                fontSize={textParameters.mainTextSize}
+                fontWeight={400}
+                maxWidth={10}
+                anchorX='center'
+                anchorY='middle'
+                fillOpacity={0}
+                isMaterial={true}
+                refCallback={addToRefs}
+                position={[textParameters.positionCarouselText, -0.5, 2]}/>
+            <TroikaText
+                text='Generative AI'
+                fontSize={textParameters.mainTextSize}
+                fontWeight={400}
+                maxWidth={10}
+                anchorX='center'
+                anchorY='middle'
+                fillOpacity={0}
+                isMaterial={true}
+                refCallback={addToRefs}
+                position={[textParameters.positionCarouselText, -0.5, 2]}/>
           </mesh>
-          <TroikaText 
+          <TroikaText
+              key={'Data' + textParameters?.mainTextSize + '-' + textParameters?.positionCarouselText}
               text='With Your Data'
-              fontSize={1}
+              fontSize={textParameters.mainTextSize}
               fontWeight={400}
               maxWidth={10}
               anchorX='center'
               anchorY='middle'
-              position={[-5.5, -1, 2]}/>
+              position={[textParameters.positionSubCarouselTextX, textParameters.positionSubCarouselTextY, 2]}/> 
       </mesh> 
       <group>
         <TroikaText 
           text='Make the best models with the best data. Scale Data Engine powers nearly every major foundation model, and with Scale GenAI Platform, leverages your enterprise data to unlock the value of AI'
-          fontSize={0.17}
+          fontSize={textParameters.subtextSize}
           fontWeight={600}
-          maxWidth={7}
+          maxWidth={textParameters.subTextMaxWidth} 
           anchorX='center'
           anchorY='middle'
-          color='white'
-          position={[1, -0.5, 1.6]}/>
+          color='white' 
+          position={[textParameters.positionSubTextX, textParameters.positionSubTextY, 1.6]}/> 
       </group>  
     </>
   )
@@ -291,11 +479,16 @@ export default function Cylinders() {
 
     return (
         <>
-          <div className="absolute right-[-700px]">
+          <div className="w-[100%]">
               <ErrorBoundary fallback={<span>Something went wrong</span>}>
                   <Canvas
+                  className="canvas max-[1536px]:!w-[1230px] 
+                                    max-[1280px]:!w-[965px] 
+                                    max-[1025px]:!w-[770px] 
+                                    max-[768px]:!w-[100%]
+                                    "
                   camera={{ position: [0, 0, 5], fov: 75 }} 
-                  style={{width: "1600px", height: "600px" }} 
+                  style={{width: "1400px", height: "600px" }} 
                   shadows
                   gl={{preserveDrawingBuffer:true}}>
                     <ambientLight intensity={7} color='white'/>

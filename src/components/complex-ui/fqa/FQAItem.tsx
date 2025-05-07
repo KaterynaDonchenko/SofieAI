@@ -31,14 +31,14 @@ export function FQAItem({question, index}: IFQAItem) {
                 <div className="wrapper flex justify-between items-start pb-8">
                     <div className="question">
                         <h3 className="number text-[2.3565rem] font-bold">0{index}/</h3>
-                        <div className="text text-[1.417rem] leading-4">
+                        <div className="text text-[1.417rem] leading-8">
                             {title.start} 
                             <strong className={`text-[${color}] font-bold`}>{title.highlighted}</strong>
                             {title.end}
                             </div>
                     </div>
                     <div className="btn" onClick={onChangeAnswerStyles}>
-                        <Button title='' classBtn='self-end !bg-[#0057FF] !rounded-tl-full !rounded-tr-full !rounded-br-full !rounded-bl-full !min-w-[2.875rem] !h-[2.875rem] !py-0 !px-0 justify-center items-center flex justify-center items-center'><span className="border-white border-2 rounded-full w-5 h-5 flex justify-center items-center"><AddIcon className="text-white font-bold text-sm rotate-[-90deg]"/></span></Button>
+                        <Button title='' classBtn='self-end glowing-shimmer-text !bg-[#9e789b] !rounded-tl-full !rounded-tr-full !rounded-br-full !rounded-bl-full !min-w-[2.875rem] !h-[2.875rem] !py-0 !px-0 justify-center items-center flex justify-center items-center'><span className="border-white border-2 rounded-full w-5 h-5 flex justify-center items-center"><AddIcon className="text-white font-bold text-sm rotate-[-90deg]"/></span></Button>
                     </div>
                 </div>
                 <div 
@@ -46,7 +46,7 @@ export function FQAItem({question, index}: IFQAItem) {
                  style={{
                     height: stylesOfAnswerBlock,
                 }}>
-                    <div ref={ref} style={{ whiteSpace: "pre-line" }}>{text}</div>
+                    <div ref={ref} className="fqa__item-text" style={{ whiteSpace: "pre-line" }}>{text}</div>
                 </div>
             </li>
     )

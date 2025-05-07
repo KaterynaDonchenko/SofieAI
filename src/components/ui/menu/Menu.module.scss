@@ -7,3 +7,24 @@
         background-color: black;
     }
 }
+
+.mobileIcon {
+    @apply flex gap-2 flex-col w-[100%] p-3 
+}
+
+.mobileIconLine {
+    @apply w-[50px] h-[3px] bg-white
+}
+
+.mobileIconLine:first-child {
+    @apply bg-[#80c2ff]
+}
+
+.mobileIconLine:nth-child(2) {
+    @apply bg-[#ab98ff]
+}
+
+.mobileIconLine:last-child {
+    @apply bg-[#fe9df9]
+}
+

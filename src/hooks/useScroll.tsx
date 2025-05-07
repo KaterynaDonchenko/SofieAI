@@ -6,16 +6,15 @@ export function useScroll() {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 50) {
-                setScroll(true) 
-            } else {
-                setScroll(false)
-            }
-        }
+            setScroll(window.scrollY > 50);
+        };
 
         const getScrollY = () => {
-            setScrollY(window.scrollY)
-        }
+            setScrollY(window.scrollY);
+        };
+
+        handleScroll();
+        getScrollY();
 
         window.addEventListener('scroll', handleScroll)
         window.addEventListener('scroll', getScrollY)

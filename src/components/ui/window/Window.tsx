@@ -5,10 +5,16 @@ import { WindowsContext } from '../../site-layout/SiteLayout';
 interface TypeWindow extends React.HTMLProps<HTMLDivElement> {
     className?: string,
     animation: string, 
-    index: number
+    index: number,
+    initialAnimationStyle?: string
 }
 
-function Window({ className, animation, index, children, ...props }: PropsWithChildren<TypeWindow>, ref: React.Ref<HTMLDivElement>) {
+function Window({ className, 
+                  animation, 
+                  initialAnimationStyle = 'opacity-0 invisible', 
+                  index, 
+                  children, 
+                  ...props }: PropsWithChildren<TypeWindow>, ref: React.Ref<HTMLDivElement>) {
 
     const [windowStyleAnimation, setWindowStyleAnimation] = useState(false)
     const windowsContext = useContext(WindowsContext)
@@ -33,7 +39,7 @@ function Window({ className, animation, index, children, ...props }: PropsWithCh
         })
     }
 
-    const animationStyle = windowStyleAnimation ? animation : 'opacity-0 invisible'
+    const animationStyle = windowStyleAnimation ? animation : initialAnimationStyle
 
     return (
         <div ref={ref}

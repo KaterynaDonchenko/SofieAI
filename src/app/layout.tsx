@@ -3,6 +3,7 @@ import { Nunito_Sans } from "next/font/google";
 import { SITE_NAME } from "@/constants/seo.constants";
 import SiteLayout from "../components/site-layout/SiteLayout";
 import "./globals.scss";
+import '../assets/scss/_media.scss'
 
 const nunito_Sans = Nunito_Sans({
   variable: "--font-geist-mono",

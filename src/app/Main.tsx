@@ -16,7 +16,7 @@ export default function Main () {
             <Description/>
             <Features/> 
             <FQA questions={4}>
-                <Link href="/questions" className="text-[#0057FF] flex gap-2 items-center">View more <ArrowDownwardIcon className="text-xl rotate-[-90deg]"/></Link>
+                <Link href="/questions" className="fqa__link text-[#000] flex gap-2 items-center">View more <ArrowDownwardIcon className="text-xl rotate-[-90deg]"/></Link>
             </FQA>
             <Download/>
         </div>
